@@ -2069,34 +2069,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/axios/index */ "./node_modules/axios/index.js");
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__);
 
-var baseUri = "";
-var contentOfAllRecords = document.getElementById("allRecords");
-_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(baseUri)
-    .then(function (response) {
-    var result = "<ul id='recordList'>";
-    response.data.forEach(function (record) {
-        result += "<li>" + car.id + " " + car.model + " " + car.vendor + "<br>Pris: " + car.price + "</li><br>";
+var baseUri = "http://pairprogrammingrest.azurewebsites.net/api/Records";
+(function () {
+    var contentOfAllRecords = document.getElementById("allRecords");
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(baseUri)
+        .then(function (response) {
+        var result = "";
+        response.data.forEach(function (record) {
+            result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
+        });
+        contentOfAllRecords.innerHTML = result;
+    })
+        .catch(function (error) {
+        if (error.response) {
+            // the request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            // https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
+            contentOfAllRecords.innerHTML = error.message;
+        }
+        else { // something went wrong in the .then block?
+            contentOfAllRecords.innerHTML = error.message;
+        }
     });
-    result += "</ul>";
-    contentOfAllRecords.innerHTML = result;
-})
-    .catch(function (error) {
-    if (error.response) {
-        // the request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        // https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
-        outputElement.innerHTML = error.message;
-    }
-    else { // something went wrong in the .then block?
-        outputElement.innerHTML = error.message;
-    }
-});
-function greeter(person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-var user = { firstName: "John", lastName: "Doe" };
-var element = document.getElementById("content");
-element.innerHTML = greeter(user);
+})();
 
 
 /***/ }),
