@@ -2069,7 +2069,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/axios/index */ "./node_modules/axios/index.js");
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__);
 
-var baseUri = "http://pairprogrammingrest.azurewebsites.net/api/Records";
+var baseUri = "http://localhost:60712/api/records"; //"http://pairprogrammingrest.azurewebsites.net/api/Records";
 var contentOfAllRecords = document.getElementById("allRecords");
 // FILTER
 var buttonFilterElement = document.getElementById("searchButton");
