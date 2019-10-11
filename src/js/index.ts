@@ -13,11 +13,14 @@ interface IRecord {
 
 let baseUri: string = "http://pairprogrammingrest.azurewebsites.net/api/Records";
 
+let contentOfAllRecords : HTMLDivElement = <HTMLDivElement>document.getElementById("allRecords");
+
+// FILTER
+let buttonFilterElement: HTMLButtonElement = <HTMLButtonElement>document.getElementById("searchButton");
+buttonFilterElement.addEventListener("click", filterRecords);
 
 
 (()=> {
-
-    let contentOfAllRecords : HTMLDivElement = <HTMLDivElement>document.getElementById("allRecords");
 axios.get<IRecord[]>(baseUri)
         .then(function (response: AxiosResponse<IRecord[]>): void {
             let result: string = "";
@@ -39,3 +42,25 @@ axios.get<IRecord[]>(baseUri)
         });
         
     })();
+
+    function filterRecords(): void {
+
+        // GET INFO FROM INPUT ELEMENT
+        let inputFilterElement: HTMLInputElement = <HTMLInputElement>document.getElementById("search");
+    
+        let uri: string = baseUri + "/" + "Item?artist=" + inputFilterElement.value + "&title=" + inputFilterElement.value +  "&yearOfPublication=" +  inputFilterElement.value;
+        
+        let result: string = "<ul>";
+        axios.get<IRecord[]>(uri)
+            .then(function (response: AxiosResponse<IRecord[]>): void {
+                response.data.forEach((record: IRecord) => { // foreach car in list lav et listItem med propertys vendor, model og price
+                    result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
+                });
+                result += "</ul>";
+                contentOfAllRecords.innerHTML = result;  
+            })
+            .catch(function (error: AxiosError): void { // error in GET or in generateSuccess?
+    
+                contentOfAllRecords.innerHTML = "Error: " + error.message+" " + uri;
+            });
+    }

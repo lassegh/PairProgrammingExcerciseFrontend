@@ -2070,8 +2070,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUri = "http://pairprogrammingrest.azurewebsites.net/api/Records";
+var contentOfAllRecords = document.getElementById("allRecords");
+// FILTER
+var buttonFilterElement = document.getElementById("searchButton");
+buttonFilterElement.addEventListener("click", filterRecords);
 (function () {
-    var contentOfAllRecords = document.getElementById("allRecords");
     _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(baseUri)
         .then(function (response) {
         var result = "";
@@ -2092,6 +2095,23 @@ var baseUri = "http://pairprogrammingrest.azurewebsites.net/api/Records";
         }
     });
 })();
+function filterRecords() {
+    // GET INFO FROM INPUT ELEMENT
+    var inputFilterElement = document.getElementById("search");
+    var uri = baseUri + "/" + "Item?artist=" + inputFilterElement.value + "&title=" + inputFilterElement.value + "&yearOfPublication=" + inputFilterElement.value;
+    var result = "<ul>";
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(uri)
+        .then(function (response) {
+        response.data.forEach(function (record) {
+            result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
+        });
+        result += "</ul>";
+        contentOfAllRecords.innerHTML = result;
+    })
+        .catch(function (error) {
+        contentOfAllRecords.innerHTML = "Error: " + error.message + " " + uri;
+    });
+}
 
 
 /***/ }),
