@@ -2074,6 +2074,9 @@ var contentOfAllRecords = document.getElementById("allRecords");
 // Add record button
 var addRecordButton = document.getElementById("addRecord");
 addRecordButton.addEventListener("click", addRecord);
+// Delete record button
+var deleteRecordButton = document.getElementById("deleteButton");
+deleteRecordButton.addEventListener("click", deleteRecord);
 // FILTER
 var filterRecordButton = document.getElementById("searchButton");
 filterRecordButton.addEventListener("click", filterRecords);
@@ -2119,6 +2122,26 @@ function addRecord() {
     })
         .catch(function (error) {
         divResponse.innerHTML = error.message;
+    });
+}
+function deleteRecord() {
+    var divResponse = document.getElementById("deleteResponse");
+    var inputElement = document.getElementById("deleteInput");
+    var uri = baseUri + "/" + inputElement.value;
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.delete(uri)
+        .then(function (response) {
+        var message = "Record deleted";
+        divResponse.innerHTML = message;
+        inputElement.value = "";
+        showAllRecords();
+    })
+        .catch(function (error) {
+        if (error.response) { // error in GET or in generateSuccess?
+            divResponse.innerHTML = error.message;
+        }
+        else { // something went wrong in the .then block?
+            divResponse.innerHTML = error.message;
+        }
     });
 }
 function filterRecords() {

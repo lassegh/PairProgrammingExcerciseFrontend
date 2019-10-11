@@ -19,6 +19,9 @@ let contentOfAllRecords : HTMLDivElement = <HTMLDivElement>document.getElementBy
 let addRecordButton : HTMLButtonElement = <HTMLButtonElement>document.getElementById("addRecord");
 addRecordButton.addEventListener("click", addRecord);
 
+// Delete record button
+let deleteRecordButton : HTMLButtonElement = <HTMLButtonElement>document.getElementById("deleteButton");
+deleteRecordButton.addEventListener("click", deleteRecord);
 
 // FILTER
 let filterRecordButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("searchButton");
@@ -79,6 +82,28 @@ axios.get<IRecord[]>(baseUri)
             });
     }
 
+    function deleteRecord(): void {
+        let divResponse: HTMLDivElement = <HTMLDivElement>document.getElementById("deleteResponse");
+        let inputElement: HTMLInputElement = <HTMLInputElement>document.getElementById("deleteInput");
+        
+        let uri: string = baseUri + "/" + inputElement.value;
+        axios.delete<IRecord>(uri)
+            .then(function (response: AxiosResponse<IRecord>): void {
+                
+
+                let message: string = "Record deleted";
+                divResponse.innerHTML = message;
+                inputElement.value = "";
+                showAllRecords();
+            })
+            .catch(function (error: AxiosError): void { 
+                if (error.response) { // error in GET or in generateSuccess?
+                    divResponse.innerHTML = error.message;
+                } else { // something went wrong in the .then block?
+                    divResponse.innerHTML = error.message;
+                }
+            });
+    }
 
 
     function filterRecords(): void {
