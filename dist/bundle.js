@@ -2086,17 +2086,20 @@ filterRecordButton.addEventListener("click", filterRecords);
 function showAllRecords() {
     _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(baseUri)
         .then(function (response) {
-        var result = "";
         response.data.forEach(function (record) {
-            result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
+            var result = "";
+            var node = document.createElement("DIV");
+            contentOfAllRecords.appendChild(node);
+            node.setAttribute("class", "panel panel-default");
+            var childElement = document.createElement("DIV");
+            node.appendChild(childElement);
+            childElement.setAttribute("class", "panel-body");
+            result += "<br>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>";
+            childElement.innerHTML = result;
         });
-        contentOfAllRecords.innerHTML = result;
     })
         .catch(function (error) {
         if (error.response) {
-            // the request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            // https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
             contentOfAllRecords.innerHTML = error.message;
         }
         else { // something went wrong in the .then block?
@@ -2136,7 +2139,7 @@ function deleteRecord() {
         showAllRecords();
     })
         .catch(function (error) {
-        if (error.response) { // error in GET or in generateSuccess?
+        if (error.response) {
             divResponse.innerHTML = error.message;
         }
         else { // something went wrong in the .then block?

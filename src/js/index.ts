@@ -37,19 +37,27 @@ filterRecordButton.addEventListener("click", filterRecords);
 function showAllRecords(): void {
 axios.get<IRecord[]>(baseUri)
         .then(function (response: AxiosResponse<IRecord[]>): void {
-            let result: string = "";
             response.data.forEach((record: IRecord) => {
-                result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
-                
+            
+            let result: string = "";
+            
+            var node = document.createElement("DIV");
+            contentOfAllRecords.appendChild(node);
+            node.setAttribute("class", "panel panel-default");
+            var childElement = document.createElement("DIV");
+            node.appendChild(childElement);
+            childElement.setAttribute("class", "panel-body");
+
+            result += "<br>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>";
+            
+            childElement.innerHTML = result;
             });
-            contentOfAllRecords.innerHTML = result;
+            
         })
         .catch(function (error: AxiosError): void { // error in GET or in generateSuccess?
             if (error.response) {
-                // the request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                // https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
                 contentOfAllRecords.innerHTML = error.message;
+
             } else { // something went wrong in the .then block?
                 contentOfAllRecords.innerHTML = error.message;
             }
@@ -96,8 +104,8 @@ axios.get<IRecord[]>(baseUri)
                 inputElement.value = "";
                 showAllRecords();
             })
-            .catch(function (error: AxiosError): void { 
-                if (error.response) { // error in GET or in generateSuccess?
+            .catch(function (error: AxiosError): void { // error in GET or in generateSuccess?
+                if (error.response) { 
                     divResponse.innerHTML = error.message;
                 } else { // something went wrong in the .then block?
                     divResponse.innerHTML = error.message;
