@@ -2080,6 +2080,9 @@ deleteRecordButton.addEventListener("click", deleteRecord);
 // FILTER
 var filterRecordButton = document.getElementById("searchButton");
 filterRecordButton.addEventListener("click", filterRecords);
+// Update record button
+var updateRecordButton = document.getElementById("putRecord");
+updateRecordButton.addEventListener("click", putRecord);
 (function () {
     showAllRecords();
 })();
@@ -2090,10 +2093,10 @@ function showAllRecords() {
             var result = "";
             var node = document.createElement("DIV");
             contentOfAllRecords.appendChild(node);
-            node.setAttribute("class", "panel panel-default");
+            node.setAttribute("style", "margin-bottom:20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05); border-color:#ddd");
             var childElement = document.createElement("DIV");
             node.appendChild(childElement);
-            childElement.setAttribute("class", "panel-body");
+            childElement.setAttribute("style", "border-top-color:#ddd");
             result += "<br>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>";
             childElement.innerHTML = result;
         });
@@ -2145,6 +2148,28 @@ function deleteRecord() {
         else { // something went wrong in the .then block?
             divResponse.innerHTML = error.message;
         }
+    });
+}
+function putRecord() {
+    var updateIdElement = document.getElementById("putId");
+    var updateArtistElement = document.getElementById("putArtist");
+    var updateTitleElement = document.getElementById("putTitle");
+    var updateYearElement = document.getElementById("putYear");
+    var updateDurationElement = document.getElementById("putDuration");
+    var outputElement = document.getElementById("putResponse");
+    var fullUri = baseUri + "/" + updateIdElement.value;
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.put(fullUri, { artist: updateArtistElement.value, title: updateTitleElement.value, duration: updateDurationElement.value, year: updateYearElement.value })
+        .then(function (response) {
+        outputElement.innerHTML = "Update successfull";
+        updateIdElement.value = "";
+        updateArtistElement.value = "";
+        updateTitleElement.value = "";
+        updateDurationElement.value = "";
+        updateYearElement.value = "";
+        showAllRecords();
+    })
+        .catch(function (error) {
+        outputElement.innerHTML = "Update error " + error.message;
     });
 }
 function filterRecords() {
