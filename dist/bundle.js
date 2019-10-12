@@ -2086,20 +2086,24 @@ updateRecordButton.addEventListener("click", putRecord);
 (function () {
     showAllRecords();
 })();
+function printDataToAllRecordsDiv(records) {
+    contentOfAllRecords.innerHTML = "";
+    records.forEach(function (record) {
+        var result = "";
+        var node = document.createElement("DIV");
+        contentOfAllRecords.appendChild(node);
+        node.setAttribute("style", "margin-bottom:20px;background-color:#fff;border:2px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05); border-color:#ddd");
+        var childElement = document.createElement("DIV");
+        node.appendChild(childElement);
+        childElement.setAttribute("style", "border-top-color:#ddd; padding-left: 50px; padding-bottom: 20px; padding-top: 20px");
+        result += "Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>Id: " + record.id;
+        childElement.innerHTML = result;
+    });
+}
 function showAllRecords() {
     _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(baseUri)
         .then(function (response) {
-        response.data.forEach(function (record) {
-            var result = "";
-            var node = document.createElement("DIV");
-            contentOfAllRecords.appendChild(node);
-            node.setAttribute("style", "margin-bottom:20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05); border-color:#ddd");
-            var childElement = document.createElement("DIV");
-            node.appendChild(childElement);
-            childElement.setAttribute("style", "border-top-color:#ddd");
-            result += "<br>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>";
-            childElement.innerHTML = result;
-        });
+        printDataToAllRecordsDiv(response.data);
     })
         .catch(function (error) {
         if (error.response) {
@@ -2156,9 +2160,15 @@ function putRecord() {
     var updateTitleElement = document.getElementById("putTitle");
     var updateYearElement = document.getElementById("putYear");
     var updateDurationElement = document.getElementById("putDuration");
+    var idString = updateIdElement.value;
+    var artistString = updateArtistElement.value;
+    var titleString = updateTitleElement.value;
+    var yearString = updateYearElement.value;
+    var durationString = updateDurationElement.value;
     var outputElement = document.getElementById("putResponse");
-    var fullUri = baseUri + "/" + updateIdElement.value;
-    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.put(fullUri, { artist: updateArtistElement.value, title: updateTitleElement.value, duration: updateDurationElement.value, year: updateYearElement.value })
+    var fullUri = baseUri + "//" + idString;
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.put(fullUri, { id: idString, artist: artistString, title: titleString, duration: durationString,
+        year: yearString })
         .then(function (response) {
         outputElement.innerHTML = "Update successfull";
         updateIdElement.value = "";
@@ -2176,18 +2186,13 @@ function filterRecords() {
     // GET INFO FROM INPUT ELEMENT
     var inputFilterElement = document.getElementById("search");
     var uri = baseUri + "/" + "Item?artist=" + inputFilterElement.value + "&title=" + inputFilterElement.value + "&yearOfPublication=" + inputFilterElement.value;
-    var result = "<ul>";
     if (inputFilterElement.value == "") {
         showAllRecords();
     }
     else {
         _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(uri)
             .then(function (response) {
-            response.data.forEach(function (record) {
-                result += "<li>" + record.id + " <br>Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "</li><br>";
-            });
-            result += "</ul>";
-            contentOfAllRecords.innerHTML = result;
+            printDataToAllRecordsDiv(response.data);
         })
             .catch(function (error) {
             contentOfAllRecords.innerHTML = "Error: " + error.message + " " + uri;
