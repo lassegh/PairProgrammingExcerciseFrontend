@@ -51,6 +51,7 @@ function printDataToAllRecordsDiv(records : IRecord[]): void{
         var childElement = document.createElement("DIV");
         node.appendChild(childElement);
         childElement.setAttribute("style", "border-top-color:#ddd; padding-left: 50px; padding-bottom: 20px; padding-top: 20px");
+        childElement.setAttribute("id", "singleRecord");
 
         result +=  "Artist: " + record.artist + "<br> Title: " + record.title + "<br> Duration: " + record.duration + " <br>Production Year: " + record.yearOfPublication + "<br>Id: " + record.id;
         
