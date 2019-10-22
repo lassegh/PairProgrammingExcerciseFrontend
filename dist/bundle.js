@@ -2168,7 +2168,7 @@ function putRecord() {
     var outputElement = document.getElementById("putResponse");
     var fullUri = baseUri + "//" + idString;
     _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.put(fullUri, { id: idString, artist: artistString, title: titleString, duration: durationString,
-        year: yearString })
+        yearOfPublication: yearString })
         .then(function (response) {
         outputElement.innerHTML = "Update successfull";
         updateIdElement.value = "";

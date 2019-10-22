@@ -140,7 +140,7 @@ axios.get<IRecord[]>(baseUri)
         let outputElement: HTMLDivElement = <HTMLDivElement>document.getElementById("putResponse");
         let fullUri: string = baseUri + "//" + idString;
         axios.put<IRecord>(fullUri, {id: idString, artist: artistString, title: titleString, duration: durationString, 
-            year: yearString })
+            yearOfPublication: yearString })
             .then((response: AxiosResponse) => {
                 outputElement.innerHTML = "Update successfull";
                 updateIdElement.value = "";
